@@ -47,7 +47,7 @@ export default function Navbar() {
         </Show>
 
         <Show when="signed-in">
-          <UserButton afterSignOutUrl="/" />
+          <UserButton />
         </Show>
         
         <Link href="/carrito" className="relative hover:text-[#7A8F5C] transition-colors">
