@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { Heart, Plus, Minus } from 'lucide-react'
 import { useUser, useClerk } from '@clerk/nextjs'
 import { useCart } from './CartContext'
@@ -42,19 +43,21 @@ export default function ProductCard({ id, name, price, imageUrl }: ProductProps)
 
   return (
     <div className="group bg-white p-4 rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300">
-      <div className="relative aspect-square bg-gray-50 rounded-xl mb-4 overflow-hidden">
+      <Link href={`/productos/${id}`} className="block relative aspect-square bg-gray-50 rounded-xl mb-4 overflow-hidden">
         <div className="w-full h-full flex items-center justify-center text-gray-300 bg-gray-100">
           Imagen
         </div>
         <button 
-          onClick={handleFavoriteClick}
+          onClick={(e) => { e.preventDefault(); handleFavoriteClick(); }}
           className="absolute top-3 right-3 p-2 bg-white/80 backdrop-blur rounded-full hover:scale-110 transition-transform"
         >
           <Heart className={`w-5 h-5 ${isFavorite(id) ? 'fill-[#7A8F5C] text-[#7A8F5C]' : 'text-gray-400'}`} />
         </button>
-      </div>
+      </Link>
 
-      <h3 className="font-medium text-gray-900 mb-1">{name}</h3>
+      <Link href={`/productos/${id}`}>
+        <h3 className="font-medium text-gray-900 mb-1 hover:text-[#7A8F5C] transition-colors">{name}</h3>
+      </Link>
       <p className="text-lg font-bold text-gray-900 mb-4">${price.toLocaleString()}</p>
 
       <div className="flex items-center justify-between mb-4">
