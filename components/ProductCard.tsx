@@ -6,6 +6,7 @@ import { useUser, useClerk } from '@clerk/nextjs'
 import { useCart } from './CartContext'
 import { useFavorites } from './FavoritesContext'
 import { WHATSAPP_NUMBER } from '../lib/constants'
+import { useToast } from './ToastContext'
 
 interface ProductProps {
   id: string
@@ -19,6 +20,7 @@ export default function ProductCard({ id, name, price, imageUrl }: ProductProps)
   const { isSignedIn } = useUser()
   const { openSignIn } = useClerk()
   const { isFavorite, toggleFavorite } = useFavorites()
+  const { showToast } = useToast()
   const [quantity, setQuantity] = useState(1)
 
   const increment = () => setQuantity(prev => prev + 1)
@@ -67,7 +69,7 @@ export default function ProductCard({ id, name, price, imageUrl }: ProductProps)
         <button 
           onClick={() => {
             addToCart({ id, name, price, image: imageUrl }, quantity);
-            alert('¡Producto agregado al carrito!');
+            showToast(`${name} agregado al carrito`);
           }}
           className="w-full py-2.5 bg-gray-100 text-gray-900 font-medium rounded-lg hover:bg-gray-200 transition-colors text-sm"
         >
