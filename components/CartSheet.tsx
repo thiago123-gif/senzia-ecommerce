@@ -1,6 +1,7 @@
 'use client'
 import { useCart } from './CartContext'
 import { X } from 'lucide-react'
+import { WHATSAPP_NUMBER } from '../lib/constants'
 
 interface CartItem {
   id: string
@@ -23,7 +24,7 @@ export default function CartSheet({ onClose }: { onClose: () => void }) {
       .map((i: CartItem) => `• ${i.quantity}x ${i.name} ($${i.price})`)
       .join('\n')
     const mensaje = `¡Hola! Quiero comprar:\n\n${resumen}\n\nTotal: $${total}`
-    const url = `https://wa.me/5493454086271?text=${encodeURIComponent(mensaje)}` // Cambia el numero!
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`
     window.open(url, '_blank')
   }
 

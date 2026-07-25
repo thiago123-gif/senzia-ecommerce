@@ -4,6 +4,7 @@ import {
   createContext,
   useContext,
   useState,
+  useEffect,
   ReactNode
 } from "react"
 
@@ -45,6 +46,10 @@ const CartContext = createContext<CartContextType | undefined>(
 )
 
 
+// Clave con la que se guarda el carrito en el navegador (localStorage)
+const CART_STORAGE_KEY = "senzia-cart"
+
+
 
 export function CartProvider({
   children
@@ -54,6 +59,59 @@ export function CartProvider({
 
 
   const [items,setItems] = useState<CartItem[]>([])
+
+  // Controla si ya terminamos de leer el carrito guardado en el navegador.
+  // Empieza en false para no pisar el localStorage con un carrito vacío
+  // antes de haber tenido la chance de leerlo.
+  const [isLoaded, setIsLoaded] = useState(false)
+
+
+  // AL MONTAR: leer el carrito guardado en el navegador (si existe)
+  //
+  // Esto corre solo en el cliente (useEffect nunca se ejecuta en el
+  // servidor), así que es seguro usar localStorage acá adentro.
+  useEffect(() => {
+
+    try {
+
+      const savedCart = localStorage.getItem(CART_STORAGE_KEY)
+
+      if (savedCart) {
+        setItems(JSON.parse(savedCart))
+      }
+
+    } catch (error) {
+
+      console.error("No se pudo leer el carrito guardado:", error)
+
+    } finally {
+
+      setIsLoaded(true)
+
+    }
+
+  }, [])
+
+
+  // CADA VEZ QUE CAMBIA EL CARRITO: guardarlo en el navegador
+  //
+  // Se espera a que isLoaded sea true para no sobreescribir el carrito
+  // guardado con el estado inicial vacío, antes de leerlo.
+  useEffect(() => {
+
+    if (!isLoaded) return
+
+    try {
+
+      localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items))
+
+    } catch (error) {
+
+      console.error("No se pudo guardar el carrito:", error)
+
+    }
+
+  }, [items, isLoaded])
 
 
 

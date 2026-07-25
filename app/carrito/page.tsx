@@ -5,6 +5,7 @@ import { Minus, Plus, Trash2, ShoppingBag } from 'lucide-react'
 import Image from 'next/image'
 
 import { useCart } from '../../components/CartContext'
+import { WHATSAPP_NUMBER } from '../../lib/constants'
 
 
 export default function CartPage() {
@@ -42,7 +43,7 @@ Total: $${total.toLocaleString('es-AR')}`
 
 
     window.open(
-      `https://wa.me/5493454086271?text=${encodeURIComponent(mensaje)}`,
+      `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`,
       '_blank'
     )
   }

@@ -5,6 +5,7 @@ import { Heart, Plus, Minus } from 'lucide-react'
 import { useUser, useClerk } from '@clerk/nextjs'
 import { useCart } from './CartContext'
 import { useFavorites } from './FavoritesContext'
+import { WHATSAPP_NUMBER } from '../lib/constants'
 
 interface ProductProps {
   id: string
@@ -32,9 +33,8 @@ export default function ProductCard({ id, name, price, imageUrl }: ProductProps)
   }
 
   const handleWhatsApp = () => {
-    const phoneNumber = '5493454086271' // <--- ¡CAMBIA ESTO POR TU NÚMERO!
     const message = `¡Hola! Quiero comprar ${quantity} unidad(es) de: ${name}.`
-    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
     window.open(url, '_blank')
   }
 
